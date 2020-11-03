@@ -1,0 +1,62 @@
+{
+    "type": "Microsoft.Authorization/policyDefinitions",
+    "name": "audit-nsg-rule-on-subnet",
+    "properties": {
+        "displayName": "NSG rule on every subnet",
+        "description": "This policy enforces a specific NSG security on every subnet",
+        "mode": "All"
+        },
+        "policyRule": {
+            "if": {
+                "anyOf": [
+                    {
+                        "allOf": [
+                            {
+                                "field": "type",
+                                "equals": "Microsoft.Network/virtualNetworks"
+                            }
+                        ]
+                    },
+                    {
+                        "count": {
+                          "field": "Microsoft.Network/virtualNetworks/subnets[*].networkSecurityGroup.[*].securityRules[*]",
+                          "where": {
+                            "allOf": [
+                              {
+                                "field": "Microsoft.Network/virtualNetworks/subnets[*].networkSecurityGroup.[*].securityRules[*].destinationAddressPrefix",
+                                "equals": "Internet"
+                              },
+                              {
+                                "anyOf": [
+                                  {
+                                    "not": {
+                                      "field": "Microsoft.Network/virtualNetworks/subnets[*].networkSecurityGroup.[*].securityRules[*].destinationPrefixes[*]",
+                                      "notIn": ["Internet"]
+                                    }
+                                  },
+                                  {
+                                    "field": "Microsoft.Network/virtualNetworks/subnets[*].networkSecurityGroup.[*].securityRules[*].destinationPrefixes[*]",
+                                    "exists": false
+                                  }
+                                ]
+                              },
+                              {
+                                "field": "Microsoft.Network/virtualNetworks/subnets[*].networkSecurityGroup.[*].securityRules[*].access",
+                                "equals": "Allow"
+                              },
+                              {
+                                "field": "Microsoft.Network/networkSecurityGroups/securityRules[*].direction",
+                                "equals": "Outbound"
+                              }
+                            ]
+                          }
+                        },
+                        "equals": 0
+                      }
+                ]
+            },
+            "then": {
+                "effect": "audit"
+            }
+        }
+    }
