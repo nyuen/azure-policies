@@ -1,6 +1,0 @@
-If a customer wants to lock down in the Azure network security group's Default security rules (https://docs.microsoft.com/en-us/azure/virtual-network/security-overview#default-security-rules) by overriding the default rule ‘AllowInternetOutBound’ – to allow outbound traffic from all VMs to Internet - with a higher priority, he wants to know the side effect on the Azure platform. Do we have a specific reason for including ‘AllowInternetOutBound’ rule by default instead of letting the customer allowing outbound connections optionally?
- 
-I reviewed the Best Practices document (https://blogs.msdn.microsoft.com/igorpag/2016/05/14/azure-network-security-groups-nsg-best-practices-and-lessons-learned/) and found the issue ‘VM stuck in "Updating" when NSG rule restricts outbound internet connectivity’ (https://blogs.msdn.microsoft.com/mast/2016/04/27/vm-stuck-in-updating-when-nsg-rule- restricts-outbound-internet-connectivity/).
- 
-If this is still a valid issue, please give me an advice on what to do if a customer need to block all outbound traffic from VMs with a strict governance requirement.
- 
