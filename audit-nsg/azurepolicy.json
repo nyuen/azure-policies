@@ -1,7 +1,7 @@
 {
     "properties": {
-        "displayName": "Denies NSG rule changes that allow all outbound internet traffic",
-        "description": "Denies the creation of network security group rules that allow all outbound internet traffic",
+        "displayName": "Audit internet outbound access",
+        "description": "Audit VNets non internet vnet missing security rule blocking outbound internet",
         "mode": "All",
         "policyRule": {
             "if": {
@@ -13,10 +13,8 @@
                                 "equals": "Microsoft.Network/virtualNetworks"
                             },
                             {
-                                "not": {
-                                    "field": "tags",
-                                    "containsKey": "internet"
-                                }
+                                "field": "tags['zone']",
+                                "notEquals": "Internet"
                             }
                         ]
                     },
